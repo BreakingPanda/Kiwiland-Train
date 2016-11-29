@@ -1,0 +1,91 @@
+﻿<div class="row">
+    <h2>Train Map</h2>
+</div>
+<div class="row">
+    <div class="panel panel-info">
+        <img src="~/Resources/Images/GraphTopology.png" alt="Train Topology" width="400" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <label>From</label>
+    </div>
+    <div class="col-md-11">
+        <input type="text" id="from" class="text-capitalize" maxlength="1"/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-1">
+        <label>To</label>
+    </div>
+    <div class="col-md-11">
+        <input type="text" id="to" class="text-capitalize" maxlength="1" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-11 col-md-offset-1">
+        <input type="button" id="find" value="Find Routes"/>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div id="routes"></div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+
+        function clearRoutes() {
+            $("#routes").html("");
+        }
+
+        $(function() {
+
+            $("#from").on("change paste keyup", function () {
+                clearRoutes();
+            });
+
+            $("#to").on("change paste keyup", function () {
+                clearRoutes();
+            });
+
+
+            $("#find").click(function() {
+
+                var start = $("#from").val().toUpperCase();
+                var end = $("#to").val().toUpperCase();
+
+                $.ajax({
+                    url: "/api/train/" + start + "/trip/" + end,
+                    type: "GET",
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+
+
+                        if (data == "NO SUCH ROUTE") {
+                            $("#routes").html("<div class=\"alert\">" + data + "</div>");
+                        }
+                        else {
+                            var len = data.length;
+                            var txt = "<table class=\"table\"><tr><th>Path</th><th>Distance</th><th>No of Stop</th></tr>";
+                            if (len > 0) {
+                                for (var i = 0; i < len; i++) {
+                                    txt += "<tr><td>" + data[i].Path + "</td><td>" + data[i].Distance + "</td><td>" + data[i].Stops + "</td></tr>";
+                                }
+                                txt += "</table>";
+                                
+                                $("#routes").html(txt);
+                            }
+                        }
+                    },
+                    fail: function(jqXHR, status) {
+                        $("#routes").html("Failed: " + status);
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+

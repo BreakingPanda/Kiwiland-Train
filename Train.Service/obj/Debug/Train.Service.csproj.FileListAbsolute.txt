@@ -1,0 +1,5 @@
+D:\Martin\Development\Projects\Train\Train.Service\bin\Debug\Train.Service.dll
+D:\Martin\Development\Projects\Train\Train.Service\bin\Debug\Train.Service.pdb
+D:\Martin\Development\Projects\Train\Train.Service\obj\Debug\Train.Service.dll
+D:\Martin\Development\Projects\Train\Train.Service\obj\Debug\Train.Service.pdb
+D:\Martin\Development\Projects\Train\Train.Service\obj\Debug\Train.Service.csprojResolveAssemblyReference.cache
