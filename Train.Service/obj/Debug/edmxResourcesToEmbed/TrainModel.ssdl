@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TrainRoadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Train.dbo.Road' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Road">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="From" />
+      <PropertyRef Name="To" />
+      <PropertyRef Name="Distance" />
+      <PropertyRef Name="CreatedDate" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="From" Type="int" Nullable="false" />
+    <Property Name="To" Type="int" Nullable="false" />
+    <Property Name="Distance" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+  </EntityType>
+  <Association Name="FK__Road__From__4316F928">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="Road" Type="Self.Road" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Road">
+        <PropertyRef Name="From" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Road__To__440B1D61">
+    <End Role="City" Type="Self.City" Multiplicity="1" />
+    <End Role="Road" Type="Self.Road" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Road">
+        <PropertyRef Name="To" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TrainRoadModelStoreContainer">
+    <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Road" EntityType="Self.Road" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Road].[Id] AS [Id], 
+    [Road].[From] AS [From], 
+    [Road].[To] AS [To], 
+    [Road].[Distance] AS [Distance], 
+    [Road].[CreatedDate] AS [CreatedDate], 
+    [Road].[ModifiedDate] AS [ModifiedDate]
+    FROM [dbo].[Road] AS [Road]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__Road__From__4316F928" Association="Self.FK__Road__From__4316F928">
+      <End Role="City" EntitySet="City" />
+      <End Role="Road" EntitySet="Road" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Road__To__440B1D61" Association="Self.FK__Road__To__440B1D61">
+      <End Role="City" EntitySet="City" />
+      <End Role="Road" EntitySet="Road" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

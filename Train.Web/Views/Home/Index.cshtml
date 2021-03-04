@@ -1,33 +1,27 @@
-﻿<div class="row">
-    <h2>Train Map</h2>
-</div>
+﻿@model Train.Web.Models.Map
+@{
+    ViewBag.Title = "Home Page";
+}
 <div class="row">
-    <div class="panel panel-info">
-        <img src="~/Resources/Images/GraphTopology.png" alt="Train Topology" width="400" />
-    </div>
+    <img src="~/Resources/Images/map.jpg" width="600" alt="Australia City Map" />
 </div>
+<br />
 <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-9">
         <label>From</label>
-    </div>
-    <div class="col-md-11">
-        <input type="text" id="from" class="text-capitalize" maxlength="1"/>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-1">
+        &nbsp;
+        @Html.DropDownListFor(x => Model.Cities, new SelectList(Model.Cities, "Value", "Text"), htmlAttributes: new { @class = "", id = "from" })
+        &nbsp;
         <label>To</label>
+        &nbsp;
+        @Html.DropDownListFor(x => Model.Cities, new SelectList(Model.Cities, "Value", "Text"), htmlAttributes: new { @class = "", id = "to" })
+        &nbsp;
+        <input type="button" id="find" value="Find Routes" class="button btn-default btn-primary" />
     </div>
-    <div class="col-md-11">
-        <input type="text" id="to" class="text-capitalize" maxlength="1" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-11 col-md-offset-1">
-        <input type="button" id="find" value="Find Routes"/>
+    <div class="col-md-3">
     </div>
 </div>
-<br/>
+<br />
 <div class="row">
     <div id="routes"></div>
 </div>
@@ -39,7 +33,7 @@
             $("#routes").html("");
         }
 
-        $(function() {
+        $(function () {
 
             $("#from").on("change paste keyup", function () {
                 clearRoutes();
@@ -50,10 +44,10 @@
             });
 
 
-            $("#find").click(function() {
+            $("#find").click(function () {
 
-                var start = $("#from").val().toUpperCase();
-                var end = $("#to").val().toUpperCase();
+                var start = $("#from").val();
+                var end = $("#to").val();
 
                 $.ajax({
                     url: "/api/train/" + start + "/trip/" + end,
@@ -74,12 +68,12 @@
                                     txt += "<tr><td>" + data[i].Path + "</td><td>" + data[i].Distance + "</td><td>" + data[i].Stops + "</td></tr>";
                                 }
                                 txt += "</table>";
-                                
+
                                 $("#routes").html(txt);
                             }
                         }
                     },
-                    fail: function(jqXHR, status) {
+                    fail: function (jqXHR, status) {
                         $("#routes").html("Failed: " + status);
                     }
                 });

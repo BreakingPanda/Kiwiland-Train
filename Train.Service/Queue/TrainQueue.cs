@@ -4,6 +4,15 @@ using Train.Service.Models;
 
 namespace Train.Service.Queue
 {
+    public interface ITrainQueue
+    {
+        void Enqueue(Town town, int distance, Route route);
+        bool HasData { get; }
+        void Dequeue();
+        Town CurrentTown { get; }
+        Route CurrentRoute { get; }
+    }
+
     public class TrainQueue : ITrainQueue
     {
         private readonly Queue<KeyValuePair<Town, Route>> _queue;
@@ -17,7 +26,7 @@ namespace Train.Service.Queue
         {
             _queue.Enqueue(new KeyValuePair<Town, Route>(town, new Route
             {
-                Path = route.Path + town.Name + "-",
+                Path = route.Path + town.Name + " -> ",
                 Distance = route.Distance + distance
             }));
         }

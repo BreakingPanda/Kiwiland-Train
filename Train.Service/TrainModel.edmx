@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TrainRoadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Train.dbo.Road' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Road">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="From" />
+            <PropertyRef Name="To" />
+            <PropertyRef Name="Distance" />
+            <PropertyRef Name="CreatedDate" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="From" Type="int" Nullable="false" />
+          <Property Name="To" Type="int" Nullable="false" />
+          <Property Name="Distance" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <Association Name="FK__Road__From__4316F928">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Road" Type="Self.Road" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Road">
+              <PropertyRef Name="From" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Road__To__440B1D61">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Road" Type="Self.Road" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Road">
+              <PropertyRef Name="To" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TrainRoadModelStoreContainer">
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Road" EntityType="Self.Road" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Road].[Id] AS [Id], 
+    [Road].[From] AS [From], 
+    [Road].[To] AS [To], 
+    [Road].[Distance] AS [Distance], 
+    [Road].[CreatedDate] AS [CreatedDate], 
+    [Road].[ModifiedDate] AS [ModifiedDate]
+    FROM [dbo].[Road] AS [Road]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Road__From__4316F928" Association="Self.FK__Road__From__4316F928">
+            <End Role="City" EntitySet="City" />
+            <End Role="Road" EntitySet="Road" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Road__To__440B1D61" Association="Self.FK__Road__To__440B1D61">
+            <End Role="City" EntitySet="City" />
+            <End Role="Road" EntitySet="Road" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TrainRoadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="FromRoads" Relationship="TrainRoadModel.FK__Road__From__4222D4EF" FromRole="City" ToRole="Road" />
+          <NavigationProperty Name="ToRoads" Relationship="TrainRoadModel.FK__Road__To__4316F928" FromRole="City" ToRole="Road" />
+        </EntityType>
+        <EntityType Name="Road">
+          <Key>
+            <PropertyRef Name="From" />
+            <PropertyRef Name="To" />
+            <PropertyRef Name="CreatedDate" />
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Distance" />
+          </Key>
+          <Property Name="From" Type="Int32" Nullable="false" />
+          <Property Name="To" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="FromCity" Relationship="TrainRoadModel.FK__Road__From__4222D4EF" FromRole="Road" ToRole="City" />
+          <NavigationProperty Name="ToCity" Relationship="TrainRoadModel.FK__Road__To__4316F928" FromRole="Road" ToRole="City" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Distance" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="TrainEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Roads" EntityType="Self.Road" />
+          <AssociationSet Name="FK__Road__From__4222D4EF" Association="TrainRoadModel.FK__Road__From__4222D4EF">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="Road" EntitySet="Roads" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Road__To__4316F928" Association="TrainRoadModel.FK__Road__To__4316F928">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="Road" EntitySet="Roads" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK__Road__From__4222D4EF">
+          <End Type="TrainRoadModel.City" Role="City" Multiplicity="1" />
+          <End Type="TrainRoadModel.Road" Role="Road" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Road">
+              <PropertyRef Name="From" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Road__To__4316F928">
+          <End Type="TrainRoadModel.City" Role="City" Multiplicity="1" />
+          <End Type="TrainRoadModel.Road" Role="Road" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Road">
+              <PropertyRef Name="To" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TrainRoadModelStoreContainer" CdmEntityContainer="TrainEntities">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="TrainRoadModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roads">
+            <EntityTypeMapping TypeName="TrainRoadModel.Road">
+              <MappingFragment StoreEntitySet="Road">
+                <ScalarProperty Name="Distance" ColumnName="Distance" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

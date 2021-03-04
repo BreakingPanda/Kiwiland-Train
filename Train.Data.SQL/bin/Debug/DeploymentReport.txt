@@ -1,0 +1,33 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [audit] (Schema)
+       [deployment] (Schema)
+       [audit].[Audit] (Table)
+       [audit].[Audit].[IX_Audit_AuditDate] (Index)
+       [deployment].[ScriptRunLog] (Table)
+       [dbo].[City] (Table)
+       [dbo].[Road] (Table)
+       [dbo].[Road].[IX_Road_Composite] (Index)
+       [audit].[DF_Audit_AuditDate] (Default Constraint)
+       Default Constraint: unnamed constraint on [deployment].[ScriptRunLog] (Default Constraint)
+       Default Constraint: unnamed constraint on [dbo].[City] (Default Constraint)
+       Default Constraint: unnamed constraint on [dbo].[Road] (Default Constraint)
+       Default Constraint: unnamed constraint on [dbo].[Road] (Default Constraint)
+       Foreign Key: unnamed constraint on [dbo].[Road] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Road] (Foreign Key)
+       [dbo].[GetCity] (Function)
+       [deployment].[Import_Data] (Procedure)
+       [dbo].[AddCity] (Procedure)
+       [dbo].[AddRoad] (Procedure)
+
+** Supporting actions

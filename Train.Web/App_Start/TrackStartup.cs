@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.Http;
 using Train.Service.DataReaders;
 using Train.Service.Models;
@@ -15,9 +14,7 @@ namespace Train.Web
                                                                     .DependencyResolver
                                                                     .GetService(typeof(ITrackReader));                      
 
-            string datafile = HostingEnvironment.MapPath("~/App_Data/TrackData.txt");
-
-            IEnumerable<Track> tracks = reader.ReadFromFile(datafile).Result;
+            IEnumerable<Track> tracks = reader.Fetch().Result;
 
             HttpRuntime.Cache.Insert("tracks", tracks);
         }

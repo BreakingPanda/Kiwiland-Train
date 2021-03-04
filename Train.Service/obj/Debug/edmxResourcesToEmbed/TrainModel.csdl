@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TrainRoadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="City">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="FromRoads" Relationship="TrainRoadModel.FK__Road__From__4222D4EF" FromRole="City" ToRole="Road" />
+    <NavigationProperty Name="ToRoads" Relationship="TrainRoadModel.FK__Road__To__4316F928" FromRole="City" ToRole="Road" />
+  </EntityType>
+  <EntityType Name="Road">
+    <Key>
+      <PropertyRef Name="From" />
+      <PropertyRef Name="To" />
+      <PropertyRef Name="CreatedDate" />
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="Distance" />
+    </Key>
+    <Property Name="From" Type="Int32" Nullable="false" />
+    <Property Name="To" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="FromCity" Relationship="TrainRoadModel.FK__Road__From__4222D4EF" FromRole="Road" ToRole="City" />
+    <NavigationProperty Name="ToCity" Relationship="TrainRoadModel.FK__Road__To__4316F928" FromRole="Road" ToRole="City" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Distance" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="TrainEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Cities" EntityType="Self.City" />
+    <EntitySet Name="Roads" EntityType="Self.Road" />
+    <AssociationSet Name="FK__Road__From__4222D4EF" Association="TrainRoadModel.FK__Road__From__4222D4EF">
+      <End Role="City" EntitySet="Cities" />
+      <End Role="Road" EntitySet="Roads" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Road__To__4316F928" Association="TrainRoadModel.FK__Road__To__4316F928">
+      <End Role="City" EntitySet="Cities" />
+      <End Role="Road" EntitySet="Roads" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK__Road__From__4222D4EF">
+    <End Type="TrainRoadModel.City" Role="City" Multiplicity="1" />
+    <End Type="TrainRoadModel.Road" Role="Road" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Road">
+        <PropertyRef Name="From" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Road__To__4316F928">
+    <End Type="TrainRoadModel.City" Role="City" Multiplicity="1" />
+    <End Type="TrainRoadModel.Road" Role="Road" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="City">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Road">
+        <PropertyRef Name="To" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -5,6 +5,15 @@ using Train.Service.Queue;
 
 namespace Train.Service.Graph
 {
+    public interface ITrainGraph
+    {
+        void AddRoute(Track track);
+        IEnumerable<Route> FindRoutes(Request request);
+        IEnumerable<Route> FindRoutes(string from, string to);
+        int? FindDistance(string town, params string[] stops);
+        Route FindShortest(string from, string to);
+    }
+
     public class TrainGraph : ITrainGraph
     {
         private readonly ITrainQueue _queue;

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <StartupScript>(Blank)</StartupScript>
+    <StartAction>StartNone</StartAction>
+    <SqlCmdVar__1>
+    </SqlCmdVar__1>
+    <SqlCmdVar__2>0</SqlCmdVar__2>
+    <SqlCmdVar__3>D:\Projects\Train\Train.Data.SQL\bin\Debug\</SqlCmdVar__3>
+    <SqlCmdVar__4>D:\Projects\Train\SQLBackup\</SqlCmdVar__4>
+  </PropertyGroup>
+</Project>

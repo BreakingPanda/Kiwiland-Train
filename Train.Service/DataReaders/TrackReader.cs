@@ -1,43 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Train.Service.Models;
 
 namespace Train.Service.DataReaders
 {
+    public interface ITrackReader
+    {
+        Task<List<Track>> Fetch();
+
+        List<string> GetCities();
+    }
+
     public class TrackReader : ITrackReader
     {
-        public async Task<IEnumerable<Track>> ReadFromFile(string filepath)
+        private readonly TrainEntities _db;
+
+        public TrackReader()
         {
-            using (var stream = File.OpenRead(filepath))
-            {
-                var bytes = new byte[stream.Length];
-
-                await stream.ReadAsync(bytes, 0, (int)stream.Length);
-
-                string content = Encoding.UTF8.GetString(bytes);
-
-                return Transform(content);
-            }
+            _db = new TrainEntities();
+            _db.Database.Connection.Open();
         }
 
-        private IEnumerable<Track> Transform(string content)
+        public Task<List<Track>> Fetch()
         {
-            if (content.StartsWith("\ufeff"))
-            {
-                content = content.Substring(1);
-            }
+            var road1 = _db.Roads.Select(x => x.Distance > 1000).ToList();
 
-            var tracks = new List<Track>();
 
-            foreach (string track in content.Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries))
-            {
-                tracks.Add(Track.NewTrack(track));
-            }
+            return _db.Roads
+                .Include(x => x.FromCity)
+                .Include(x => x.ToCity)
+                .Select(x => new Track
+                {
+                    From = x.FromCity.Name,
+                    To = x.ToCity.Name,
+                    Distance = x.Distance
+                })
+                .ToListAsync();
+        }
 
-            return tracks;
+        public List<string> GetCities()
+        {
+            return _db.Cities.Select(x => x.Name).ToList();
         }
     }
 }
